@@ -1,11 +1,11 @@
 // ============================================================
 // 自动生成文件，请勿手动修改
-// 生成时间: 2026-11-14T05:11:47.875Z
+// 生成时间: 2026-11-14T05:18:00.382Z
 // 上游脚本: https://raw.githubusercontent.com/AIsouler/MyClash/main/Script/mihomoScript.js
 // 自定义脚本: MyCustomizations.js
 // ============================================================
 
-// ===== 远程脚本开始 =====
+// ===== 远程脚本开始（main 已重命名为 __remote_main）=====
 /**
  * mihomo配置覆写脚本（全量版）
  * 作者：AIsouler
@@ -1865,7 +1865,7 @@ function buildDnsAndHostsConfig(config, filteredProxies) {
 /**
  * 主入口：覆写机场订阅配置，生成完整 mihomo 配置
  */
-function main(config) {
+function __remote_main(config) {
   const newConfig = {};
 
   const filteredProxies = filterAndNormalizeProxies(config);
@@ -1992,9 +1992,8 @@ function applyCustomizations(config) {
 // ===== 本地自定义结束 =====
 
 // ===== 包装 main（自动生成） =====
-const __remoteMain = main;
 function main(config) {
-  let result = __remoteMain(config);
+  let result = __remote_main(config);
   if (typeof applyCustomizations === "function") {
     result = applyCustomizations(result);
   }
