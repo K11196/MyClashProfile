@@ -1,0 +1,42 @@
+name: Build Merged Script
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'Upstream.js'
+      - 'Upstream.txt'
+      - 'Upstream.url'
+      - 'Upstream'
+      - 'MyCustomizations.js'
+      - 'build.js'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build merged script
+        run: node build.js
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/merged-script.js
+          git diff --staged --quiet || git commit -m "chore: auto-build $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
