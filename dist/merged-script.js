@@ -1,6 +1,6 @@
 // ============================================================
 // 自动生成文件，请勿手动修改
-// 生成时间: 2026-11-16T03:19:49.194Z
+// 生成时间: 2026-11-17T05:19:48.701Z
 // 上游脚本: https://raw.githubusercontent.com/AIsouler/MyClash/main/Script/mihomoScript.js
 // 自定义脚本: MyCustomizations.js
 // ============================================================
@@ -675,12 +675,7 @@ const serviceConfigs = [
       },
     },
     icon: `${iconBaseUrl}Emby.svg`,
-    rules: [
-      'RULE-SET,emby,Emby',
-      'DOMAIN-SUFFIX,mb3admin.com,Emby',
-      'DOMAIN-SUFFIX,nubebelle.com,Emby',
-      'DOMAIN-KEYWORD,emby,Emby',
-    ],
+    rules: ['RULE-SET,emby,Emby'],
   },
   {
     name: 'PikPak',
