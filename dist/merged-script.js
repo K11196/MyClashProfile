@@ -1,6 +1,6 @@
 // ============================================================
 // 自动生成文件，请勿手动修改
-// 生成时间: 2026-11-26T05:35:33.539Z
+// 生成时间: 2026-11-27T05:29:22.567Z
 // 上游脚本: https://raw.githubusercontent.com/AIsouler/MyClash/main/Script/mihomoScript.js
 // 自定义脚本: MyCustomizations.js
 // ============================================================
@@ -74,10 +74,12 @@ const ruleOptionsEnable = {
 const prefixRules = [
   // 私有网络直连
   'RULE-SET,private,直连',
+  'RULE-SET,private_ip,直连,no-resolve',
 
   // 国内直连
   'RULE-SET,geolocation-cn,直连',
   'RULE-SET,games_cn,直连', // 已包含 steam 下载域名
+  'RULE-SET,games_download_cn,直连',
   'RULE-SET,synology,直连',
   'RULE-SET,nvidia_cn,直连',
   'RULE-SET,apple_cn,直连',
@@ -259,6 +261,12 @@ const baseRuleProviders = {
     url: `${ruleSetBaseUrl}geosite/category-games@cn.mrs`,
     path: './ruleset/category-games@cn.mrs',
     'path-in-bundle': 'geo/geosite/category-games@cn.mrs',
+  },
+  games_download_cn: {
+    ...ruleProviderCommonDomain,
+    url: `${ruleSetBaseUrl}geosite/category-game-platforms-download@cn.mrs`,
+    path: './ruleset/category-game-platforms-download@cn.mrs',
+    'path-in-bundle': 'geo/geosite/category-game-platforms-download@cn.mrs',
   },
   synology: {
     ...ruleProviderCommonDomain,
@@ -1898,6 +1906,20 @@ function __remote_main(config) {
 
   newConfig['dns'] = dns;
   newConfig['hosts'] = hosts;
+
+  newConfig['rules'] = [
+    ...priorityRules,
+    ...prefixRules,
+    ...(ruleOptionsEnable.屏蔽代理QUIC流量 ? blockForeignQuic : []),
+    ...functionalRules,
+    'RULE-SET,geolocation-!cn,默认代理',
+    'RULE-SET,cn_ip,直连',
+    'RULE-SET,private_ip,直连',
+    ...functionalIpRules,
+    `MATCH,${ruleOptionsEnable.极简国内外分流模式 ? '默认代理' : '漏网之鱼'}`,
+    'NETWORK,UDP,REJECT',
+  ];
+
   newConfig['mixed-port'] = 7890;
   newConfig['allow-lan'] = true;
   newConfig['ipv6'] = true;
@@ -1946,18 +1968,6 @@ function __remote_main(config) {
     ...generatedRegionGroups,
   ];
   newConfig['rule-providers'] = finalRuleProviders;
-
-  newConfig['rules'] = [
-    ...priorityRules,
-    ...prefixRules,
-    ...(ruleOptionsEnable.屏蔽代理QUIC流量 ? blockForeignQuic : []),
-    ...functionalRules,
-    'RULE-SET,geolocation-!cn,默认代理',
-    'RULE-SET,cn_ip,直连',
-    'RULE-SET,private_ip,直连',
-    ...functionalIpRules,
-    `MATCH,${ruleOptionsEnable.极简国内外分流模式 ? '默认代理' : '漏网之鱼'}`,
-  ];
 
   return newConfig;
 }
